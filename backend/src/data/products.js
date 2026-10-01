@@ -1,0 +1,68 @@
+const products = [
+  {
+    id: 1,
+    name: 'Classic White Tee',
+    category: 'Men',
+    price: 29.99,
+    badge: null,
+    image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&q=80',
+  },
+  {
+    id: 2,
+    name: 'Slim Fit Chinos',
+    category: 'Men',
+    price: 59.99,
+    badge: 'New',
+    image: 'https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=400&q=80',
+  },
+  {
+    id: 3,
+    name: 'Floral Summer Dress',
+    category: 'Women',
+    price: 79.99,
+    badge: 'New',
+    image: 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=400&q=80',
+  },
+  {
+    id: 4,
+    name: 'Oversized Hoodie',
+    category: 'Women',
+    price: 69.99,
+    badge: null,
+    image: 'https://images.unsplash.com/photo-1556821840-3a63f15732ce?w=400&q=80',
+  },
+  {
+    id: 5,
+    name: 'Denim Jacket',
+    category: 'Men',
+    price: 99.99,
+    badge: 'Sale',
+    image: 'https://images.unsplash.com/photo-1576871337632-b9aef4c17ab9?w=400&q=80',
+  },
+  {
+    id: 6,
+    name: 'Linen Blazer',
+    category: 'Women',
+    price: 119.99,
+    badge: null,
+    image: 'https://images.unsplash.com/photo-1594938298603-c8148c4b4357?w=400&q=80',
+  },
+  {
+    id: 7,
+    name: 'Striped Polo Shirt',
+    category: 'Men',
+    price: 44.99,
+    badge: null,
+    image: 'https://images.unsplash.com/photo-1625910513774-6cf75b4bb4f3?w=400&q=80',
+  },
+  {
+    id: 8,
+    name: 'High-Waist Jeans',
+    category: 'Women',
+    price: 89.99,
+    badge: 'Sale',
+    image: 'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=400&q=80',
+  },
+]
+
+module.exports = products
