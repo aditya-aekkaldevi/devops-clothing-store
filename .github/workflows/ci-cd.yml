@@ -63,24 +63,39 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-  # ─── 3. DEPLOY TO RENDER ──────────────────────────────────────────────────
-  deploy-render:
-    name: Deploy to Render
+  # ─── 3. DEPLOY BACKEND → RAILWAY ──────────────────────────────────────────
+  deploy-railway:
+    name: Deploy Backend to Railway
     runs-on: ubuntu-latest
     needs: build
     if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
     steps:
-      - name: Deploy backend to Render
+      - name: Trigger Railway deploy
         run: |
-          curl -s -X POST "${{ secrets.RENDER_BACKEND_DEPLOY_HOOK }}" | \
-            python3 -c "import sys,json; r=json.load(sys.stdin); print('Deploy triggered:', r.get('deploy', {}).get('id', 'ok'))"
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" -X POST "${{ secrets.RAILWAY_DEPLOY_HOOK }}")
+          echo "Railway response: $STATUS"
+          [ "$STATUS" = "200" ] || [ "$STATUS" = "202" ] || exit 1
 
-      - name: Deploy frontend to Render
-        run: |
-          curl -s -X POST "${{ secrets.RENDER_FRONTEND_DEPLOY_HOOK }}" | \
-            python3 -c "import sys,json; r=json.load(sys.stdin); print('Deploy triggered:', r.get('deploy', {}).get('id', 'ok'))"
+  # ─── 4. DEPLOY FRONTEND → VERCEL ──────────────────────────────────────────
+  deploy-vercel:
+    name: Deploy Frontend to Vercel
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
 
-  # ─── 4. DEPLOY TO AWS EKS (disabled — add AWS + Docker Hub secrets to enable) ──
+      - name: Install Vercel CLI
+        run: npm install -g vercel
+
+      - name: Deploy to Vercel
+        working-directory: ./frontend
+        run: vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }} --yes
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+  # ─── 5. DEPLOY TO AWS EKS (disabled — add AWS + Docker Hub secrets to enable) ──
   # deploy-eks:
   #   needs: build
   #   ...
