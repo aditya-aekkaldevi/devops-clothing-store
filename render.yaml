@@ -1,0 +1,27 @@
+services:
+  # ── Backend: Node.js web service ──────────────────────────────────────────
+  - type: web
+    name: clothing-store-backend
+    runtime: node
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: node src/index.js
+    envVars:
+      - key: PORT
+        value: 10000        # Render assigns port 10000 by default
+    healthCheckPath: /health
+
+  # ── Frontend: Static site (Vite build) ────────────────────────────────────
+  - type: web
+    name: clothing-store-frontend
+    runtime: static
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_URL
+        sync: false         # Set this manually in Render dashboard to backend URL
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html

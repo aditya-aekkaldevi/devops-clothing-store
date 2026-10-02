@@ -10,8 +10,10 @@ export default function App() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
+  const API_BASE = import.meta.env.VITE_API_URL || ''
+
   useEffect(() => {
-    fetch('/api/products')
+    fetch(`${API_BASE}/api/products`)
       .then(res => res.json())
       .then(data => { setProducts(data); setLoading(false) })
       .catch(() => { setError('Failed to load products'); setLoading(false) })
